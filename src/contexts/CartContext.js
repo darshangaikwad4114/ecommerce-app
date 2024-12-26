@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect, useMemo } from "react";
 
 export const CartContext = createContext();
 
@@ -15,89 +15,76 @@ const CartProvider = ({ children }) => {
       return accumulator + currentItem.price * currentItem.amount;
     }, 0);
     setTotal(total);
-  });
+  }, [cart]);
 
   // update item amount
   useEffect(() => {
-    if (cart) {
-      const amount = cart.reduce((accumulator, currentItem) => {
-        return accumulator + currentItem.amount;
-      }, 0);
-      setItemAmount(amount);
-    }
+    const amount = cart.reduce((accumulator, currentItem) => {
+      return accumulator + currentItem.amount;
+    }, 0);
+    setItemAmount(amount);
   }, [cart]);
 
   // add to cart
   const addToCart = (product, id) => {
-    const newItem = { ...product, amount: 1 };
-    // check if the item is already in the cart
-    const cartItem = cart.find((item) => {
-      return item.id === id;
+    setCart((prevCart) => {
+      const cartItem = prevCart.find((item) => item.id === id);
+      if (cartItem) {
+        return prevCart.map((item) =>
+          item.id === id ? { ...item, amount: item.amount + 1 } : item
+        );
+      } else {
+        return [...prevCart, { ...product, amount: 1 }];
+      }
     });
-    if (cartItem) {
-      const newCart = [...cart].map((item) => {
-        if (item.id === id) {
-          return { ...item, amount: cartItem.amount + 1 };
-        } else return item;
-      });
-      setCart(newCart);
-    } else {
-      setCart([...cart, newItem]);
-    }
   };
 
   // remove from cart
   const removeFromCart = (id) => {
-    const newCart = cart.filter((item) => {
-      return item.id !== id;
-    });
-    setCart(newCart);
+    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
 
-  // cleart cart
+  // clear cart
   const clearCart = () => {
     setCart([]);
   };
 
   // increase amount
   const increaseAmount = (id) => {
-    const cartItem = cart.find((item) => item.id === id);
-    addToCart(cartItem, id);
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === id ? { ...item, amount: item.amount + 1 } : item
+      )
+    );
   };
 
   // decrease amount
   const decreaseAmount = (id) => {
-    const cartItem = cart.find((item) => item.id === id);
-    if (cartItem) {
-      const newCart = cart.map((item) => {
-        if (item.id === id) {
-          return { ...item, amount: cartItem.amount - 1 };
-        } else {
-          return item;
-        }
-      });
-      setCart(newCart);
-    }
-    if (cartItem.amount < 2) {
-      removeFromCart(id);
-    }
+    setCart((prevCart) =>
+      prevCart
+        .map((item) =>
+          item.id === id ? { ...item, amount: item.amount - 1 } : item
+        )
+        .filter((item) => item.amount > 0)
+    );
   };
 
+  const contextValue = useMemo(
+    () => ({
+      cart,
+      addToCart,
+      removeFromCart,
+      clearCart,
+      increaseAmount,
+      decreaseAmount,
+      itemAmount,
+      total,
+    }),
+    [cart, itemAmount, total]
+  );
+
   return (
-    <CartContext.Provider
-      value={{
-        cart,
-        addToCart,
-        removeFromCart,
-        clearCart,
-        increaseAmount,
-        decreaseAmount,
-        itemAmount,
-        total,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
+    <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
   );
 };
 
