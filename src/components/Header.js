@@ -26,7 +26,7 @@ const Header = () => {
     >
       <div className="container mx-auto flex items-center justify-between h-full">
         <Link to={"/"}>
-          <div className="w-[40px]">
+          <div className="w-[60px]">
             <img src={Logo} alt="" />
           </div>
         </Link>
@@ -36,7 +36,7 @@ const Header = () => {
           onClick={() => setIsOpen(!isOpen)}
           className="cursor-pointer flex relative"
         >
-          <BsBag className="text-2xl" />
+          <BsBag className="text-4xl" />
           <div className="bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center">
             {itemAmount}
           </div>
