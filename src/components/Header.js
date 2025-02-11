@@ -42,7 +42,6 @@ const Header = () => {
           </div>
         </Link>
 
-        {/* Cart icon with item count */}
         <div
           onClick={handleCartToggle}
           className="cursor-pointer flex relative transform hover:scale-105 transition-all duration-300 hover:text-brand-primary p-1.5 sm:p-2"
@@ -51,7 +50,9 @@ const Header = () => {
           tabIndex={0}
         >
           <BsBag className="text-xl sm:text-2xl transition-colors duration-300 text-brand-dark" />
-          <div className="bg-brand-secondary absolute -right-1 -bottom-1 text-[9px] sm:text-[10px] w-[16px] h-[16px] sm:w-[18px] sm:h-[18px] text-white rounded-full flex justify-center items-center font-bold shadow-lg">
+          <div 
+            className="bg-brand-secondary absolute -right-1 -bottom-1 text-[9px] sm:text-[10px] w-[16px] h-[16px] sm:w-[18px] sm:h-[18px] text-white rounded-full flex justify-center items-center font-bold shadow-lg"
+          >
             {itemAmount}
           </div>
         </div>
