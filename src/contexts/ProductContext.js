@@ -8,6 +8,7 @@ const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [categories, setCategories] = useState([]);
 
   // Function to fetch products
   useEffect(() => {
@@ -20,6 +21,10 @@ const ProductProvider = ({ children }) => {
         }
         const data = await response.json();
         setProducts(data);
+        
+        // Extract unique categories
+        const uniqueCategories = [...new Set(data.map(product => product.category))];
+        setCategories(uniqueCategories);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -31,7 +36,7 @@ const ProductProvider = ({ children }) => {
   }, []);
 
   return (
-    <ProductContext.Provider value={{ products, loading, error }}>
+    <ProductContext.Provider value={{ products, loading, error, categories }}>
       {children}
     </ProductContext.Provider>
   );
