@@ -15,28 +15,31 @@ const CartItem = ({ item }) => {
   const totalPrice = (price * amount).toFixed(2);
 
   return (
-    <div className="flex gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full font-light text-gray-500">
+    <div className="flex gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full font-light text-gray-500 transform transition-transform duration-300 hover:bg-gray-50">
       <div className="w-full min-h-[150px] flex items-center gap-x-4">
         {/* Product image with link to product page */}
         <Link to={`/product/${id}`}>
-          <img className="max-w-[80px]" src={image} alt={title} />
+          <img 
+            className="max-w-[80px] transform hover:scale-110 transition-transform duration-300" 
+            src={image} 
+            alt={title} 
+          />
         </Link>
         <div className="w-full flex flex-col">
           <div className="flex justify-between mb-2">
             {/* Product title with link to product page */}
             <Link
               to={`/product/${id}`}
-              className="text-sm uppercase font-medium max-w-[240px] text-primary hover:underline"
+              className="text-sm uppercase font-medium max-w-[240px] text-primary hover:underline transition-all duration-300"
             >
               {title}
             </Link>
             {/* Remove item from cart */}
             <button
               onClick={() => removeFromCart(id)}
-              className="text-xl cursor-pointer"
-              aria-label={`Remove ${title} from cart`}
+              className="text-xl cursor-pointer hover:scale-110 transition-transform duration-300"
             >
-              <IoMdClose className="text-gray-500 hover:text-red-500 transition" />
+              <IoMdClose className="text-gray-500 hover:text-red-500 transition-colors duration-300" />
             </button>
           </div>
           <div className="flex gap-x-2 h-[36px] text-sm">
@@ -44,8 +47,7 @@ const CartItem = ({ item }) => {
             <div className="flex flex-1 max-w-[100px] items-center h-full border text-primary font-medium">
               <button
                 onClick={() => decreaseAmount(id)}
-                className="h-full flex-1 flex justify-center items-center cursor-pointer"
-                aria-label={`Decrease quantity of ${title}`}
+                className="flex-1 h-full flex justify-center items-center cursor-pointer hover:bg-gray-100 transition-colors duration-300"
               >
                 <IoMdRemove />
               </button>
@@ -54,14 +56,13 @@ const CartItem = ({ item }) => {
               </div>
               <button
                 onClick={() => increaseAmount(id)}
-                className="h-full flex flex-1 justify-center items-center cursor-pointer"
-                aria-label={`Increase quantity of ${title}`}
+                className="flex-1 h-full flex justify-center items-center cursor-pointer hover:bg-gray-100 transition-colors duration-300"
               >
                 <IoMdAdd />
               </button>
             </div>
             {/* Display item price */}
-            <div className="flex flex-1 justify-around items-center">
+            <div className="flex flex-1 items-center justify-around">
               ${price}
             </div>
             {/* Display total price for the item */}

@@ -29,11 +29,11 @@ const Header = () => {
     <header
       className={`${
         isActive ? "bg-white py-4 shadow-md" : "bg-none py-6"
-      } fixed w-full z-10 lg:px-8 transition-all`}
+      } fixed w-full z-10 lg:px-8 transition-all duration-500`}
     >
       <div className="container mx-auto flex items-center justify-between h-full">
         <Link to="/">
-          <div className="w-[60px]">
+          <div className="w-[60px] transform hover:scale-110 transition-transform duration-300">
             <img src={Logo} alt="Company Logo" />
           </div>
         </Link>
@@ -41,11 +41,11 @@ const Header = () => {
         {/* Cart icon with item count */}
         <div
           onClick={() => setIsOpen(!isOpen)}
-          className="cursor-pointer flex relative"
+          className="cursor-pointer flex relative transform hover:scale-110 transition-transform duration-300"
           aria-label="Cart"
         >
-          <BsBag className="text-4xl" />
-          <div className="bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center">
+          <BsBag className="text-4xl hover:text-gray-500 transition-colors duration-300" />
+          <div className="bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center animate-pulse">
             {itemAmount}
           </div>
         </div>
