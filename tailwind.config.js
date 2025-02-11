@@ -1,5 +1,6 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  darkMode: 'class',
   theme: {
     fontFamily: {
       primary: 'Poppins',
@@ -20,6 +21,10 @@ module.exports = {
       colors: {
         primary: '#222222',
         secondary: '#F5E6E0',
+        dark: {
+          primary: '#1a1a1a',
+          secondary: '#2d2d2d',
+        },
       },
       backgroundImage: {
         hero: "url('./img/bghero.jpg')",

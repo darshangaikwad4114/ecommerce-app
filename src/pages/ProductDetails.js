@@ -4,43 +4,42 @@ import { CartContext } from "../contexts/CartContext";
 import { ProductContext } from "../contexts/ProductContext";
 
 const ProductDetails = () => {
-  // get the product id from url
+  // Retrieve the product ID from the URL
   const { id } = useParams();
   const { addToCart } = useContext(CartContext);
   const { products } = useContext(ProductContext);
 
-  //get the single product based on id
-  const product = products.find((item) => {
-    return item.id === parseInt(id);
-  });
+  // Find the product by ID, ensuring the ID is a number
+  const product = products.find((item) => item.id === Number(id));
 
-  // if product is not found
+  // Display a loading message if the product is not found
   if (!product) {
     return (
       <section className="h-screen flex justify-center items-center">
-        Loading...
+        <p>Loading...</p>
       </section>
     );
   }
 
-  // destructure product
+  // Destructure product properties for easier access
   const { title, price, description, image } = product;
+
   return (
     <section className="pt-[450px] md:pt-32 pb-[400px] md:pb-12 lg:py-32 h-screen flex items-center">
       <div className="container mx-auto">
-        {/* image and text wrapper */}
+        {/* Wrapper for image and text */}
         <div className="flex flex-col lg:flex-row items-center">
-          {/* image */}
+          {/* Product image */}
           <div className="flex flex-1 justify-center items-center mb-8 lg:mb-0">
-            <img className="max-w-[200px] lg:max-w-xs" src={image} alt="" />
+            <img className="max-w-[200px] lg:max-w-xs" src={image} alt={title} />
           </div>
-          {/* text */}
+          {/* Product details */}
           <div className="flex-1 text-center lg:text-left">
             <h1 className="text-[26px] font-medium mb-2 max-w-[450px] mx-auto lg:mx-0">
               {title}
             </h1>
             <div className="text-2xl text-red-500 font-medium mb-6">
-              $ {price}
+              ${price}
             </div>
             <p className="mb-8">{description}</p>
             <button

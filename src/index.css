@@ -1,7 +1,9 @@
+/* Importing Tailwind CSS base, components, and utilities */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Applying base styles to the body element */
 @layer base {
   body {
     @apply font-primary text-primary;

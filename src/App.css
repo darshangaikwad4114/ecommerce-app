@@ -1,19 +1,23 @@
-.App {
+/* Styles for the main application container */
+.app {
   text-align: center;
 }
 
-.App-logo {
+/* Styles for the application logo */
+.app-logo {
   height: 40vmin;
   pointer-events: none;
 }
 
+/* Animation for the logo when reduced motion is not preferred */
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+  .app-logo {
+    animation: app-logo-spin infinite 20s linear;
   }
 }
 
-.App-header {
+/* Styles for the application header */
+.app-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -21,14 +25,16 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #ffffff; /* Use hex code for white for consistency */
 }
 
-.App-link {
+/* Styles for links within the application */
+.app-link {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
+/* Keyframes for the logo spin animation */
+@keyframes app-logo-spin {
   from {
     transform: rotate(0deg);
   }

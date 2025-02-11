@@ -1,31 +1,35 @@
 import React, { createContext, useState, useEffect, useMemo } from "react";
 
+// Create a context for the cart
 export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
-  // cart state
+  // State to hold cart items
   const [cart, setCart] = useState([]);
-  // item amount state
+  // State to hold the total number of items
   const [itemAmount, setItemAmount] = useState(0);
-  // total price state
+  // State to hold the total price
   const [total, setTotal] = useState(0);
 
+  // Calculate total price whenever the cart changes
   useEffect(() => {
-    const total = cart.reduce((accumulator, currentItem) => {
-      return accumulator + currentItem.price * currentItem.amount;
-    }, 0);
-    setTotal(total);
+    const newTotal = cart.reduce(
+      (accumulator, currentItem) => accumulator + currentItem.price * currentItem.amount,
+      0
+    );
+    setTotal(newTotal);
   }, [cart]);
 
-  // update item amount
+  // Calculate total item amount whenever the cart changes
   useEffect(() => {
-    const amount = cart.reduce((accumulator, currentItem) => {
-      return accumulator + currentItem.amount;
-    }, 0);
-    setItemAmount(amount);
+    const newAmount = cart.reduce(
+      (accumulator, currentItem) => accumulator + currentItem.amount,
+      0
+    );
+    setItemAmount(newAmount);
   }, [cart]);
 
-  // add to cart
+  // Function to add a product to the cart
   const addToCart = (product, id) => {
     setCart((prevCart) => {
       const cartItem = prevCart.find((item) => item.id === id);
@@ -39,17 +43,17 @@ const CartProvider = ({ children }) => {
     });
   };
 
-  // remove from cart
+  // Function to remove a product from the cart
   const removeFromCart = (id) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
 
-  // clear cart
+  // Function to clear the cart
   const clearCart = () => {
     setCart([]);
   };
 
-  // increase amount
+  // Function to increase the amount of a specific product
   const increaseAmount = (id) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
@@ -58,7 +62,7 @@ const CartProvider = ({ children }) => {
     );
   };
 
-  // decrease amount
+  // Function to decrease the amount of a specific product
   const decreaseAmount = (id) => {
     setCart((prevCart) =>
       prevCart
@@ -69,6 +73,7 @@ const CartProvider = ({ children }) => {
     );
   };
 
+  // Memoize the context value to optimize performance
   const contextValue = useMemo(
     () => ({
       cart,
@@ -83,6 +88,7 @@ const CartProvider = ({ children }) => {
     [cart, itemAmount, total]
   );
 
+  // Provide the context to children components
   return (
     <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
   );
