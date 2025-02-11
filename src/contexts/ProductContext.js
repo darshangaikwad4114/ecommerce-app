@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
 // Create a context for products
 export const ProductContext = createContext();
@@ -6,28 +6,32 @@ export const ProductContext = createContext();
 const ProductProvider = ({ children }) => {
   // State to store products
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Function to fetch products
-  const fetchProducts = useCallback(async () => {
-    try {
-      const response = await fetch("https://fakestoreapi.com/products");
-      if (!response.ok) {
-        throw new Error("Failed to fetch products");
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("https://fakestoreapi.com/products");
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
+        const data = await response.json();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-      const data = await response.json();
-      setProducts(data);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
+    };
+
+    fetchProducts();
   }, []);
 
-  // Fetch products on component mount
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-
   return (
-    <ProductContext.Provider value={{ products }}>
+    <ProductContext.Provider value={{ products, loading, error }}>
       {children}
     </ProductContext.Provider>
   );
