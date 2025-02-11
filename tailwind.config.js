@@ -9,6 +9,7 @@ module.exports = {
         DEFAULT: '30px',
         lg: '0',
       },
+      center: true,
     },
     screens: {
       sm: '640px',

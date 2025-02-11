@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { SidebarContext } from "../contexts/SidebarContext";
 import { CartContext } from "../contexts/CartContext";
 import { Link } from "react-router-dom";
@@ -11,19 +11,21 @@ const Header = () => {
   const { isOpen, setIsOpen } = useContext(SidebarContext);
   const { itemAmount } = useContext(CartContext);
 
-  // Effect to add scroll event listener
+  // Optimize scroll handler with useCallback
+  const handleScroll = useCallback(() => {
+    setIsActive(window.scrollY > 60);
+  }, []);
+
   useEffect(() => {
-    const handleScroll = () => {
-      setIsActive(window.scrollY > 60);
-    };
-
     window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
-    // Cleanup function to remove the event listener
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []); // Empty dependency array ensures this effect runs only once
+  // Handle cart toggle with error prevention
+  const handleCartToggle = (e) => {
+    e.preventDefault();
+    setIsOpen(!isOpen);
+  };
 
   return (
     <header
@@ -40,9 +42,11 @@ const Header = () => {
 
         {/* Cart icon with item count */}
         <div
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={handleCartToggle}
           className="cursor-pointer flex relative transform hover:scale-110 transition-transform duration-300"
-          aria-label="Cart"
+          aria-label={`Cart with ${itemAmount} items`}
+          role="button"
+          tabIndex={0}
         >
           <BsBag className="text-4xl hover:text-gray-500 transition-colors duration-300" />
           <div className="bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center animate-pulse">

@@ -10,6 +10,17 @@ const Product = ({ product }) => {
   // Destructure product properties for easier access
   const { id, image, category, title, price } = product;
 
+  // Handle add to cart with error prevention
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      addToCart(product, id);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
+  };
+
   return (
     <div className="transform transition-all duration-300 hover:-translate-y-2">
       <div className="border border-[#e4e4e4] h-[300px] mb-4 relative overflow-hidden group">
@@ -17,16 +28,19 @@ const Product = ({ product }) => {
           {/* Product image */}
           <div className="w-[200px] mx-auto flex justify-center items-center">
             <img
+              loading="lazy"
               className="max-h-[160px] transform transition-transform duration-700 group-hover:scale-110"
               src={image}
-              alt={title} // Use descriptive alt text for accessibility
+              alt={title}
+              width="160"
+              height="160"
             />
           </div>
         </div>
         {/* Action buttons */}
         <div className="absolute top-6 -right-11 group-hover:right-5 p-2 flex flex-col justify-center items-center gap-y-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
           <button 
-            onClick={() => addToCart(product, id)}
+            onClick={handleAddToCart}
             className="transform hover:scale-110 transition-transform duration-300"
             aria-label={`Add ${title} to cart`}
           >
