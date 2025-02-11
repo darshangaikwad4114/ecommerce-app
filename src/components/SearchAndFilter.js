@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { FiFilter } from 'react-icons/fi';
 
-const SearchAndFilter = ({ onSearch, onFilter, categories }) => {
+const SearchAndFilter = ({ onSearch, onFilter, categories, disabled }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('default');
@@ -26,7 +26,7 @@ const SearchAndFilter = ({ onSearch, onFilter, categories }) => {
   };
 
   return (
-    <div className="mb-8 px-4">
+    <div className={`mb-8 px-4 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
         {/* Search Input */}
         <div className="relative w-full md:w-96">
