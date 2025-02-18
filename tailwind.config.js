@@ -57,8 +57,14 @@ module.exports = {
       },
       animation: {
         'fade-in': 'fade-in 0.5s ease-out'
-      }
+      },
+      fontFamily: {
+        lato: ['Lato', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif'],
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 };

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap');
+
 /* Importing Tailwind CSS base, components, and utilities */
 @tailwind base;
 @tailwind components;
@@ -6,6 +8,15 @@
 /* Applying base styles to the body element */
 @layer base {
   body {
-    @apply font-primary text-primary;
+    @apply font-lato text-primary;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-montserrat;
+  }
+  .font-lato {
+    font-family: 'Lato', sans-serif;
+  }
+  .font-montserrat {
+    font-family: 'Montserrat', sans-serif;
   }
 }

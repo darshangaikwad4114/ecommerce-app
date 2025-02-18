@@ -42,3 +42,12 @@
     transform: rotate(360deg);
   }
 }
+
+@layer base {
+  .font-lato {
+    font-family: 'Lato', sans-serif;
+  }
+  .font-montserrat {
+    font-family: 'Montserrat', sans-serif;
+  }
+}
