@@ -38,6 +38,7 @@ const CartItem = ({ item }) => {
             <button
               onClick={() => removeFromCart(id)}
               className="text-xl cursor-pointer hover:scale-110 transition-transform duration-300"
+              aria-label="Remove item"
             >
               <IoMdClose className="text-gray-500 hover:text-red-500 transition-colors duration-300" />
             </button>
@@ -48,6 +49,7 @@ const CartItem = ({ item }) => {
               <button
                 onClick={() => decreaseAmount(id)}
                 className="flex-1 h-full flex justify-center items-center cursor-pointer hover:bg-gray-100 transition-colors duration-300"
+                aria-label="Decrease quantity"
               >
                 <IoMdRemove />
               </button>
@@ -57,6 +59,7 @@ const CartItem = ({ item }) => {
               <button
                 onClick={() => increaseAmount(id)}
                 className="flex-1 h-full flex justify-center items-center cursor-pointer hover:bg-gray-100 transition-colors duration-300"
+                aria-label="Increase quantity"
               >
                 <IoMdAdd />
               </button>

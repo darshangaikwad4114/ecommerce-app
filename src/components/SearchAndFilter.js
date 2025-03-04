@@ -30,7 +30,9 @@ const SearchAndFilter = ({ onSearch, onFilter, categories, disabled }) => {
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
         {/* Search Input */}
         <div className="relative w-full md:w-96">
+          <label htmlFor="search" className="sr-only">Search products</label>
           <input
+            id="search"
             type="text"
             placeholder="Search products..."
             value={searchTerm}
@@ -43,7 +45,9 @@ const SearchAndFilter = ({ onSearch, onFilter, categories, disabled }) => {
         <div className="flex gap-4 w-full md:w-auto">
           {/* Category Filter */}
           <div className="relative w-full md:w-48">
+            <label htmlFor="category" className="sr-only">Filter by category</label>
             <select
+              id="category"
               value={selectedCategory}
               onChange={handleCategoryChange}
               className="w-full px-4 py-2 border rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
@@ -59,21 +63,25 @@ const SearchAndFilter = ({ onSearch, onFilter, categories, disabled }) => {
           </div>
 
           {/* Sort Options */}
-          <select
-            value={sortBy}
-            onChange={handleSortChange}
-            className="w-full md:w-48 px-4 py-2 border rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
-          >
-            <option value="default">Sort by</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="name-asc">Name: A to Z</option>
-            <option value="name-desc">Name: Z to A</option>
-          </select>
+          <div className="relative w-full md:w-48">
+            <label htmlFor="sort" className="sr-only">Sort by</label>
+            <select
+              id="sort"
+              value={sortBy}
+              onChange={handleSortChange}
+              className="w-full px-4 py-2 border rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-300"
+            >
+              <option value="default">Sort by</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="name-asc">Name: A to Z</option>
+              <option value="name-desc">Name: Z to A</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default SearchAndFilter; 
+export default SearchAndFilter;
