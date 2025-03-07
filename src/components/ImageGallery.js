@@ -6,6 +6,25 @@ const ImageGallery = ({ images }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
+  // Define navigation functions with useCallback to avoid the circular dependency
+  const handlePrevious = useCallback(() => {
+    if (!isTransitioning) {
+      setIsTransitioning(true);
+      setSelectedIndex(prev => (prev === 0 ? images.length - 1 : prev - 1));
+      // Reset transition lock after animation time
+      setTimeout(() => setIsTransitioning(false), 300);
+    }
+  }, [images.length, isTransitioning]);
+
+  const handleNext = useCallback(() => {
+    if (!isTransitioning) {
+      setIsTransitioning(true);
+      setSelectedIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));
+      // Reset transition lock after animation time
+      setTimeout(() => setIsTransitioning(false), 300);
+    }
+  }, [images.length, isTransitioning]);
+
   // Handle keyboard controls
   const handleKeyDown = useCallback((event) => {
     if (event.key === 'Escape') {
@@ -15,7 +34,7 @@ const ImageGallery = ({ images }) => {
     } else if (event.key === 'ArrowRight') {
       handleNext();
     }
-  }, []);
+  }, [handlePrevious, handleNext]);
 
   // Add and remove event listeners
   useEffect(() => {
@@ -30,24 +49,6 @@ const ImageGallery = ({ images }) => {
       document.body.style.overflow = '';
     };
   }, [isFullscreen, handleKeyDown]);
-
-  const handlePrevious = () => {
-    if (!isTransitioning) {
-      setIsTransitioning(true);
-      setSelectedIndex(prev => (prev === 0 ? images.length - 1 : prev - 1));
-      // Reset transition lock after animation time
-      setTimeout(() => setIsTransitioning(false), 300);
-    }
-  };
-
-  const handleNext = () => {
-    if (!isTransitioning) {
-      setIsTransitioning(true);
-      setSelectedIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));
-      // Reset transition lock after animation time
-      setTimeout(() => setIsTransitioning(false), 300);
-    }
-  };
 
   const toggleFullscreen = () => {
     setIsFullscreen(prev => !prev);

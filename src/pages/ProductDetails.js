@@ -2,9 +2,9 @@ import React, { useContext, useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 import { ProductContext } from "../contexts/ProductContext";
-import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
+import { BsStarFill, BsStarHalf, BsStar, BsChevronRight } from "react-icons/bs";
 import { IoMdArrowBack } from "react-icons/io";
-import { FaShoppingCart, FaHeart, FaShare, FaCheckCircle, FaTruck, FaShieldAlt, FaUndo } from "react-icons/fa";
+import { FaShoppingCart, FaHeart, FaShare, FaCheckCircle, FaTruck, FaShieldAlt, FaUndo, FaHome } from "react-icons/fa";
 import RelatedProducts from "../components/RelatedProducts";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ImageGallery from "../components/ImageGallery";
@@ -19,6 +19,7 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [showToast, setShowToast] = useState(false);
   
   // Custom hook to scroll to top on page load
   useScrollToTop();
@@ -37,8 +38,12 @@ const ProductDetails = () => {
       addToCart({ ...product, amount: quantity });
       setAddedToCart(true);
       
-      // Reset "Added to cart" message after 3 seconds
+      // Show toast notification
+      setShowToast(true);
+      
+      // Reset toast and button after 3 seconds
       setTimeout(() => {
+        setShowToast(false);
         setAddedToCart(false);
       }, 3000);
     }
@@ -104,35 +109,77 @@ const ProductDetails = () => {
 
   return (
     <div className="pt-16 pb-12 lg:py-24 bg-gray-50">
+      {/* Toast Notification */}
+      <div 
+        className={`fixed top-20 right-4 z-50 bg-teal-600 text-white px-4 py-3 rounded-lg shadow-lg flex items-center transition-all duration-300 transform ${
+          showToast ? 'translate-y-0 opacity-100' : '-translate-y-12 opacity-0 pointer-events-none'
+        }`}
+        style={{ maxWidth: "90%", zIndex: 9999 }}
+      >
+        <div className="bg-white p-1 rounded-full mr-3">
+          <FaCheckCircle className="text-teal-600" size={16} />
+        </div>
+        <div>
+          <div className="font-medium">{product?.title} added to cart!</div>
+          <div className="text-sm text-teal-100">Quantity: {quantity}</div>
+        </div>
+        <button 
+          onClick={() => setShowToast(false)}
+          className="ml-3 text-teal-100 hover:text-white"
+          aria-label="Close notification"
+        >
+          ✕
+        </button>
+      </div>
+
       <div className="container mx-auto px-4">
-        {/* Breadcrumb navigation */}
-        <nav aria-label="Breadcrumb" className="mb-6">
-          <ol className="flex items-center text-sm text-gray-500">
-            <li>
-              <Link to="/" className="hover:text-teal-500 transition-colors">Home</Link>
-            </li>
-            <li className="mx-2">/</li>
-            <li>
-              <Link to="/products" className="hover:text-teal-500 transition-colors">Products</Link>
-            </li>
-            <li className="mx-2">/</li>
-            <li>
-              <Link to={`/category/${product.category}`} className="hover:text-teal-500 transition-colors">
-                {product.category.charAt(0).toUpperCase() + product.category.slice(1)}
+        {/* Enhanced Breadcrumb navigation */}
+        <nav aria-label="Breadcrumb" className="py-4 mb-4">
+          <ol className="flex flex-wrap items-center text-sm">
+            <li className="flex items-center">
+              <Link 
+                to="/" 
+                className="text-gray-500 hover:text-teal-600 transition-colors flex items-center"
+                aria-label="Home"
+              >
+                <FaHome className="mr-1" />
+                <span className="sr-only sm:not-sr-only">Home</span>
               </Link>
+              <BsChevronRight className="mx-2 text-gray-400" aria-hidden="true" />
             </li>
-            <li className="mx-2">/</li>
-            <li aria-current="page" className="text-gray-900 font-medium truncate max-w-[200px]">
+            
+            <li className="flex items-center">
+              <Link 
+                to="/products" 
+                className="text-gray-500 hover:text-teal-600 transition-colors"
+              >
+                All Products
+              </Link>
+              <BsChevronRight className="mx-2 text-gray-400" aria-hidden="true" />
+            </li>
+            
+            <li className="flex items-center">
+              <Link 
+                to={`/category/${product.category}`} 
+                className="text-gray-500 hover:text-teal-600 transition-colors capitalize"
+              >
+                {product.category}
+              </Link>
+              <BsChevronRight className="mx-2 text-gray-400" aria-hidden="true" />
+            </li>
+            
+            <li aria-current="page" className="text-teal-600 font-medium truncate max-w-[200px] sm:max-w-xs">
               {product.title}
             </li>
           </ol>
         </nav>
 
+        {/* Back button with enhanced styling */}
         <Link 
           to="/products" 
-          className="inline-flex items-center text-teal-600 mb-8 hover:underline focus:outline-none focus:ring-2 focus:ring-teal-500 rounded-md px-2 py-1"
+          className="inline-flex items-center text-teal-600 mb-6 hover:bg-teal-50 px-3 py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-teal-500"
         >
-          <IoMdArrowBack className="mr-1" />
+          <IoMdArrowBack className="mr-2" aria-hidden="true" />
           <span>Back to products</span>
         </Link>
         
@@ -173,10 +220,33 @@ const ProductDetails = () => {
                 <span className="px-2 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-md">Save 20%</span>
               </div>
               
-              {/* Full description */}
+              {/* Simplified Product Description */}
               <div className="py-4 border-t border-b border-gray-200">
-                <h2 className="text-lg font-medium mb-2">Description</h2>
-                <p className="text-gray-700 leading-relaxed">{product.description}</p>
+                <h2 className="text-lg font-medium mb-3 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-teal-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+                  </svg>
+                  Description
+                </h2>
+                
+                {/* Main description - shortened */}
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  {product.description}
+                </p>
+                
+                {/* Quick feature highlights */}
+                <div className="grid grid-cols-2 gap-2 mt-4">
+                  {['Premium quality', 'Built to last', 'Customer favorite', 
+                    product.category.includes('clothing') ? 'Comfortable fit' : 'Sleek design'
+                  ].map((feature, index) => (
+                    <div key={index} className="flex items-center text-sm">
+                      <svg className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      {feature}
+                    </div>
+                  ))}
+                </div>
               </div>
               
               {/* Quantity selector */}
